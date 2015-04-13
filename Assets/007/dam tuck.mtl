@@ -1,0 +1,167 @@
+# Blender3D MTL File: dam tuck.blend
+# Material Count: 15
+newmtl Material.131_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.568750 0.568750 0.568750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.129_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.215625 0.215625 0.215625
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.130_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.568750 0.568750 0.568750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.132_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.568750 0.568750 0.568750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.094_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.568750 0.568750 0.568750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.092_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.750000 0.750000 0.750000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.090_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.793750 0.793750 0.793750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.093_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.750000 0.750000 0.750000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.091_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.425000 0.425000 0.425000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.133_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.568750 0.568750 0.568750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.077_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.793750 0.793750 0.793750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.096_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.568750 0.568750 0.568750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.097_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.568750 0.568750 0.568750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.095_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.568750 0.568750 0.568750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
+newmtl Material.128_dam_tuck_grp.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.793750 0.793750 0.793750
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd dam tuck_grp.png
+
+
