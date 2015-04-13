@@ -10,7 +10,7 @@ public class WeaponHandler : MonoBehaviour {
 	public ParticleSystem flash;
 	public bool canShoot=true;
 	// ^^^^^^^^^^^^^^^^^^^^^^^^
-
+ 
 	//public string CurrentWeapon;
 
 	public List<string> availableWeapons = new List<string>();
