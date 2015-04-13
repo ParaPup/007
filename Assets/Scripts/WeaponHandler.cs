@@ -11,6 +11,7 @@ public class WeaponHandler : MonoBehaviour {
 	public bool canShoot=true;
 	// ^^^^^^^^^^^^^^^^^^^^^^^^
 
+	
 	//public string CurrentWeapon;
 
 	public List<string> availableWeapons = new List<string>();
