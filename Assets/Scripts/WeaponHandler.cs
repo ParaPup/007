@@ -24,13 +24,18 @@ public class WeaponHandler : MonoBehaviour {
 
 	}
 
+	// LOOP WEAPONS, FIND NEXT, assign activeweapon to NEXT in WeaponList
+	void NextWeapon(){
+
+	}
+
 	void SwitchWeapon(){
 		//Up > 0
 		//Down < 0
+
 		//Next Weapon
 		if(Input.GetAxis("Mouse ScrollWheel")> 0){
-			//CurrentWeapon = availableWeapons.FindIndex(availableWeapons.Find ("CurrentWeapon"));
-			//print(availableWeapons.Find(availableWeapons.Contains(CurrentWeapon)));
+
 		}
 		//Last Weapon
 		if(Input.GetAxis("Mouse ScrollWheel")< 0){
