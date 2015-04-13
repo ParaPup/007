@@ -2,92 +2,114 @@
 
 public abstract class WeaponBase : MonoBehaviour
 {
-    public int ammoCount;                   // Total ammunition.
-    public int costPerShot;                 // Ammunition expense per shot.
-    public string weaponName;               // Name of weapon.
-    public float cooldownBetweenShots;      // Cooldown time between shots (in seconds).
+    public int ammoCount;                       // Total ammunition.
+    public int costPerShot;                     // Ammunition expense per shot.
+    public int ammoInMag;                       // Ammo in the magazine.
+    public int magCapacity;                     // Magazine capacity.
+    public string weaponName;                   // Name of weapon.
+    public float cooldownBetweenTrigger;        // Cooldown time between shots from the trigger (in seconds).
+    public float reloadTime;                    // Time to reload (in seconds).
+    
+    public AudioClip emptyClipSound;            // Empty Clip sound clip.
+    public AudioClip reloadSound;               // Reloading sound clip.
+    public AudioClip fireSound;                 // Weapon fire sound clip.
 
-    private float lastShotTime = 0;         // Time last shot was fired.
-    private GameObject owner = null;        // Reference to Actor that is in posession of the weapon.
-
-    public enum FireMode
-    {
-        SemiAuto,
-        Auto,
-        OneShot,
-        Melee
-    }
-
-    public FireMode fireMode;
+    public GameObject weaponAmmunitionType;     // Ammunition prefab (must contain an ammunition component) that
+                                                // the weapon accepts as valid ammunition.
+    
+    protected AudioSource audioEmitter = null;    // Audio emitter on Weapon object to emit firing (etc) sounds.
+    protected float lastShotTime = 0;           // Time last shot was fired.
+    private GameObject owner = null;            // Reference to Actor that is in posession of the weapon.
+    private bool reloading = false;             // Is the Actor currently reloading?
+    private float reloadStartTime = 0;          // Time reload began.
 
     public virtual void Reset()
     {
         // Default member values
         ammoCount = 10;
         costPerShot = 1;
-        cooldownBetweenShots = 0.1f;
+        ammoInMag = 5;
+        magCapacity = 5;
+        cooldownBetweenTrigger = 1.0f;
+        reloadTime = 3.0f;
         weaponName = "";
+        audioEmitter = GetComponent<AudioSource>();
+        if (audioEmitter == null)
+        {
+            Debug.LogError("Weapon object does not contain an Audio Emitter (AudioSource)");
+        }
 
         Init();
     }
 
-    protected abstract void Init();
-
-    public bool Fire()
+    protected bool CanFire()
     {
-        bool success = false;
-        switch (fireMode)
+        var currTime = Time.time;
+        // Trigger cooldown
+        if (currTime - lastShotTime > cooldownBetweenTrigger)
         {
-            case FireMode.SemiAuto:
-                // Check if the time since the last shot is greater than the cooldown time
-                if (Time.time - lastShotTime > cooldownBetweenShots)
-                {
-                    // Check for ammunition
-                    if (ammoCount > 0)
-                    {
-                        // Fire!
-                        ammoCount -= costPerShot;
-                        OnFire();
-                        lastShotTime = Time.time;
-                        success = true;
-                    }
-                    else
-                    {
-                        // Empty!
-                        OnEmpty();
-                    }
-                }
-                break;
-
-            case FireMode.Auto:
-
-                break;
-
-            case FireMode.OneShot:
-
-                break;
-
-            case FireMode.Melee:
-                OnFire();
-                break;
-
-            default:
-                Debug.LogError("FireMode not valid!");
-                break;
+            // Reloading?
+            if (reloading && currTime - reloadStartTime > reloadTime)
+            {
+                reloading = false;
+                lastShotTime = currTime;
+                return true;
+            }
         }
-        return success;
+        return false;
     }
 
-    protected abstract void OnFire();
+    public void Reload()
+    {
+        if (ammoCount > 0)
+        {
+            if (ammoInMag != magCapacity)
+            {
+                // Reload!
+                reloading = true;
+                reloadStartTime = Time.time;
+                if (reloadSound != null)
+                {
+                    audioEmitter.PlayOneShot(reloadSound, 0.9f);
+                }
+            }
+        }
+        
+    }
 
-    protected abstract void OnEmpty();
+    protected void ReduceAmmo(int numToReduceBy)
+    {
+        if (ammoCount > 0)
+        {
+            if (ammoInMag > 0)
+            {
+                ammoInMag--;
+                ammoCount--;
+            }
+            else
+            {
+                Reload();
+            }
+        }
+        else
+        {
+            if (emptyClipSound != null)
+            {
+                audioEmitter.PlayOneShot(emptyClipSound, 0.9f);
+            }
+        }
+    }
+
+    protected abstract void Init();
+
+    public abstract void Fire();
 
     public virtual void OnPickup(GameObject newOwner)
     {
         if (newOwner != null)
         {
             owner = newOwner;
-            owner.GetComponent<WeaponManager>().PickUp(this);
+            owner.GetComponent<WeaponManager>().PickUpWeapon(this);
         }
         else
         {
@@ -99,7 +121,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (owner != null)
         {
-            owner.GetComponent<WeaponManager>().Drop(this);
+            owner.GetComponent<WeaponManager>().DropWeapon(this);
         }
         else
         {

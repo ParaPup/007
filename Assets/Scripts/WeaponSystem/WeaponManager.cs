@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public class WeaponManager : MonoBehaviour
 {
-    private List<WeaponBase> weaponInventory;
+    private List<WeaponBase> weaponInventory = new List<WeaponBase>();
 
     public void Reset()
     {
         weaponInventory.Clear();
     }
 
-    public void PickUp(WeaponBase weapon)
+    public void PickUpWeapon(WeaponBase weapon)
     {
         bool alreadyContains = false;
 
@@ -29,7 +29,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    public void Drop(WeaponBase weapon)
+    public void DropWeapon(WeaponBase weapon)
     {
         bool contains = false;
 
