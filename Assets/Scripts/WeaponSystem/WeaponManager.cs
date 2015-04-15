@@ -1,55 +1,153 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using WeaponBaseExtensions;
 
 public class WeaponManager : MonoBehaviour
 {
-    private List<WeaponBase> weaponInventory = new List<WeaponBase>();
+    public GameObject defaultWeapon = null; // Default weapon to equip the player with
+    public Transform weaponLocation = null; // Location to instantiate the weapons.
+                                            // NB: This should be a child object of the player camera.
+
+    private readonly List<WeaponBase> weaponInventory = new List<WeaponBase>(); // Weapon Inventory
+    private WeaponBase activeWeapon; // Currently active weapon, pulled from the Weapon Inventory
+
+    // Input events are handled via method delegation per update. TODO implement an InputManager
+    public void Update()
+    {
+        // Handle primary fire input
+        if (Input.GetButtonDown("Fire1"))
+        {
+            activeWeapon.StartFire();
+        }
+        else if (Input.GetButtonUp("Fire1"))
+        {
+            activeWeapon.EndFire();
+        }
+
+        // Handle mouse scroll input
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            NextWeapon();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            LastWeapon();
+        }
+
+        // Handle weapon drop button
+        if (Input.GetButtonDown("Drop Weapon"))
+        {
+            DropActiveWeapon();
+        }
+    }
+
+    public void Start()
+    {
+        if (ValidateImperatives())
+        {
+            var weapon = Instantiate(defaultWeapon);
+            if (weapon != null)
+            {
+                PickUpWeapon(weapon.GetComponent<WeaponBase>());
+            }
+        }
+    }
+
+    // Use to validate all specified imperitives.
+    private bool ValidateImperatives()
+    {
+        var success = true;
+
+        if (defaultWeapon == null)
+        {
+            success = false;
+            Debug.LogError("Default Weapon has not been specified or is not valid!");
+        }
+        if (weaponLocation == null)
+        {
+            success = false;
+            Debug.LogError("Weapon Location has not been specified or is not valid!");
+        }
+
+        return success;
+    }
 
     public void Reset()
     {
         weaponInventory.Clear();
+        activeWeapon = null;
     }
 
+    // Performs checks and equips a WeaponBase object. Called via trigger event on weapons.
     public void PickUpWeapon(WeaponBase weapon)
     {
-        bool alreadyContains = false;
-
-        foreach (var weap in weaponInventory)
+        if (!PlayerHasWeapon(weapon))
         {
-            if (weap.weaponName == weapon.weaponName)
-            {
-                alreadyContains = true;
-            }
-        }
-
-        if (!alreadyContains)
-        {
+            weapon.OnPickup(weaponLocation.transform);
             weaponInventory.Add(weapon);
+            SetActiveWeapon(weapon);
         }
     }
 
+    // Equip the next weapon in the weapon inventory
+    private void NextWeapon()
+    {
+        SetActiveWeapon(weaponInventory.WeaponAfter(activeWeapon));
+    }
+
+    // Equip the previous weapon in the weapon inventory
+    private void LastWeapon()
+    {
+        SetActiveWeapon(weaponInventory.WeaponBefore(activeWeapon));
+    }
+
+    // Set the active weapon. Checks for existance of a weapon type in the weapon inventory.
+    private void SetActiveWeapon(WeaponBase weapon)
+    {
+        if (!weapon.Equals(activeWeapon) && PlayerHasWeapon(weapon))
+        {
+            // weapon is not currently active yes the player does possess it
+            // Perform switch
+            if (activeWeapon != null) activeWeapon.gameObject.SetActive(false);
+            activeWeapon = weapon;
+            activeWeapon.gameObject.SetActive(true);
+        }
+    }
+
+    // Checks wether the provided weapon's type exists in the weapon inventory
+    public bool PlayerHasWeapon(WeaponBase weapon)
+    {
+        return weaponInventory.GetWeapon(weapon) != null;
+    }
+
+    // Drop the weapon of provided type from the player's inventory
     public void DropWeapon(WeaponBase weapon)
     {
-        bool contains = false;
+        var clone = weaponInventory.GetWeapon(weapon);
 
-        foreach (var weap in weaponInventory)
+        // Check if the weapon object was found in the list
+        if (clone != null)
         {
-            if (weap.weaponName == weapon.weaponName)
+            // Check if the weapon object is the active weapon
+            if (clone.Equals(activeWeapon))
             {
-                weaponInventory.Remove(weapon);
-                contains = true;
+                // The weapon object is the active weapon
+                DropActiveWeapon();
+            }
+            else
+            {
+                clone.gameObject.SetActive(true);
+                clone.OnDrop();
+                weaponInventory.Remove(clone);    
             }
         }
-
-        if (contains)
-        {
-            Debug.Log("Weapon removed from agent");
-        }
-        else
-        {
-            Debug.Log("Agent doesnt contain weapon " + weapon.GetType());
-        }
     }
-	
+
+    // Drop the currently active weapon. Active weapon is switched out before drop.
+    public void DropActiveWeapon()
+    {
+        LastWeapon();
+        activeWeapon.OnDrop();
+        weaponInventory.Remove(activeWeapon);
+    }
 }
