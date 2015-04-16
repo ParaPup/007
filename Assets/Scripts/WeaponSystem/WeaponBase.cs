@@ -120,7 +120,7 @@ public abstract class WeaponBase : MonoBehaviour
 		physicsComp.detectCollisions = true;
 		transform.SetParent(null);
 		// Re-enable the Pickup components
-		StartCoroutine(ReenableCollisionDelay(1.0f));
+		StartCoroutine(ReenableCollisionAfterDelay(1.0f));
 		// "Throw" weapon forward
 		physicsComp.AddForce(transform.forward * 8, ForceMode.Impulse);
 	}
@@ -133,6 +133,13 @@ public abstract class WeaponBase : MonoBehaviour
 			var clone = other.GetComponent<WeaponManager>();
 			if (clone != null) clone.PickUpWeapon(this);
 		}
+	}
+
+	// Coroutine that delays the reactivation of the pickup physics component by (float) seconds number of seconds
+	private IEnumerator ReenableCollisionAfterDelay(float seconds)
+	{
+		yield return new WaitForSeconds(seconds);
+		pickupCollisionComp.enabled = true;
 	}
 
     // Checks wether the weapon has any active cooldowns preventing firing.
@@ -192,19 +199,12 @@ public abstract class WeaponBase : MonoBehaviour
     // Called when the player ends the fire sequence (Fire key is released)
     public abstract void EndFire();
 
-    // Coroutine that delays the reactivation of the pickup physics component by (float) seconds number of seconds
-    private IEnumerator ReenableCollisionDelay(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        pickupCollisionComp.enabled = true;
-    }
-
     // System.Object.Equals override. Checks the weaponName's of the compared WeaponBase objects for equality.
     public override bool Equals(object o)
     {
         if (ReferenceEquals(null, o)) return false;
         if (ReferenceEquals(this, o)) return true;
-        if (o.GetType() != this.GetType()) return false;
+        if (o.GetType() != GetType()) return false;
         return Equals((WeaponBase) o);
     }
 

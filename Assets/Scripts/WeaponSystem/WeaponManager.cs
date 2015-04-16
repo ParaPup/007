@@ -4,13 +4,16 @@ using WeaponBaseExtensions;
 
 public class WeaponManager : MonoBehaviour
 {
-	public GameObject defaultWeapon = null; // Default weapon to equip the player with
-	public Transform weaponLocation = null; // Location to instantiate the weapons. NB: This should be a child object of the player camera.
+	public GameObject defaultWeaponPrefab = null;	// Default weapon to equip the player with
+	public Transform weaponLocation = null;			// Location to instantiate the weapons.
+													// NB: This should be a child object of the player camera.
 
 	private readonly List<WeaponBase> weaponInventory = new List<WeaponBase>(); // Weapon Inventory
 
 	[ReadOnly] [SerializeField] private WeaponBase activeWeapon;
 		// Currently active weapon, pulled from the Weapon Inventory
+
+	private WeaponBase defaultWeapon; // Default weapon reference, pulled from the Weapon Inventory
 
 	// Input events are handled via method delegation per update. TODO implement an InputManager
 	public void Update()
@@ -52,10 +55,15 @@ public class WeaponManager : MonoBehaviour
 	{
 		if (ValidateImperatives())
 		{
-			var weapon = Instantiate(defaultWeapon);
-			if (weapon != null)
+			var weapon = Instantiate(defaultWeaponPrefab);
+			defaultWeapon = weapon.GetComponent<WeaponBase>();
+			if (defaultWeapon != null)
 			{
-				PickUpWeapon(weapon.GetComponent<WeaponBase>());
+				PickUpWeapon(defaultWeapon);
+			}
+			else
+			{
+				Debug.LogError("Default Weapon Prefab is incorrectly configured! It does not contain a WeaponBase component");
 			}
 		}
 	}
@@ -65,7 +73,7 @@ public class WeaponManager : MonoBehaviour
 	{
 		var success = true;
 
-		if (defaultWeapon == null)
+		if (defaultWeaponPrefab == null)
 		{
 			success = false;
 			Debug.LogError("Default Weapon has not been specified or is not valid!");
@@ -155,7 +163,7 @@ public class WeaponManager : MonoBehaviour
 	// Drop the currently active weapon. Active weapon is switched out before drop.
 	public void DropActiveWeapon()
 	{
-		if (weaponInventory.Count == 1) return;
+		if (activeWeapon.Equals(defaultWeapon)) return;
 		var clone = activeWeapon;
 		// Switch to prior inventory weapon
 		LastWeapon();
@@ -163,6 +171,5 @@ public class WeaponManager : MonoBehaviour
 		clone.gameObject.SetActive(true);
 		clone.OnDrop();
 		weaponInventory.Remove(clone);
-		Debug.Log(clone);
 	}
 }
