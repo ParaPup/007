@@ -11,6 +11,7 @@ GameObject:
   - 23: {fileID: 2376432}
   - 33: {fileID: 3327188}
   - 82: {fileID: 8248840}
+  - 65: {fileID: 6595752}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -28,6 +29,7 @@ GameObject:
   - 4: {fileID: 451922}
   - 114: {fileID: 11452236}
   - 54: {fileID: 5407728}
+  - 135: {fileID: 13520586}
   m_Layer: 0
   m_Name: TestPistol1
   m_TagString: Untagged
@@ -42,7 +44,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 171068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -257.69458, y: .5, z: 235.403015}
+  m_LocalPosition: {x: -259.533356, y: .5, z: 236.466034}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 453274}
@@ -56,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 129200}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: .5, y: .5, z: 1}
   m_Children: []
   m_Father: {fileID: 451922}
   m_RootOrder: 0
@@ -70,7 +72,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 3b3000ac94c2df446b24017248334731, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -106,6 +108,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6595752
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 129200}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &8248840
 AudioSource:
   m_ObjectHideFlags: 1
@@ -186,11 +200,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c674a1b221e83f4caa64b348be19f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoCount: 10
-  costPerShot: 1
-  ammoInMag: 5
+  ammoCapacity: 0
   magCapacity: 5
-  weaponName: Semi-Auto Firearm
+  ammoCount: 10
+  ammoInMag: 5
+  weaponName: Test Pistol 1
   cooldownBetweenTrigger: .5
   reloadTime: 3
   emptyClipSound: {fileID: 0}
@@ -198,10 +212,24 @@ MonoBehaviour:
   fireSound: {fileID: 0}
   weaponAmmunitionType: 0
   audioEmitter: {fileID: 0}
+  pickupCollisionComp: {fileID: 0}
   physicsComp: {fileID: 0}
   meshComp: {fileID: 0}
   meshRendComp: {fileID: 0}
-  collisionComp: {fileID: 0}
+  modelCollisionComp: {fileID: 0}
+  materialComp: {fileID: 0}
+--- !u!135 &13520586
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171068}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.20000005
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
