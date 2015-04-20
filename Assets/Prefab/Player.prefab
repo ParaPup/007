@@ -300,8 +300,172 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8999528dac11fac49a17134779b41fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultWeapon: {fileID: 171068, guid: 8144b39db63131b4e86d84824c360f1f, type: 2}
+  defaultWeaponPrefab: {fileID: 0}
+  defaultAmmoPrefab: {fileID: 0}
   weaponLocation: {fileID: 435376}
+  pistolAmmo:
+    ammunition:
+      ammunitionType: 0
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 100
+    ammunitionPrefab: {fileID: 0}
+  rifleAmmo:
+    ammunition:
+      ammunitionType: 1
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  shotgunCartridges:
+    ammunition:
+      ammunitionType: 2
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  handGrenades:
+    ammunition:
+      ammunitionType: 3
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  rockets:
+    ammunition:
+      ammunitionType: 4
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  remoteMines:
+    ammunition:
+      ammunitionType: 5
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  proximityMines:
+    ammunition:
+      ammunitionType: 6
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  timedMines:
+    ammunition:
+      ammunitionType: 7
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  throwingKnives:
+    ammunition:
+      ammunitionType: 8
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  grenadeRounds:
+    ammunition:
+      ammunitionType: 9
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  magnumBullets:
+    ammunition:
+      ammunitionType: 10
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  goldenBullets:
+    ammunition:
+      ammunitionType: 11
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  bugs:
+    ammunition:
+      ammunitionType: 12
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  goldeneyeKeys:
+    ammunition:
+      ammunitionType: 13
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  plastiques:
+    ammunition:
+      ammunitionType: 14
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  watchLaserBattries:
+    ammunition:
+      ammunitionType: 15
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  watchMagnetAttractRounds:
+    ammunition:
+      ammunitionType: 16
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  tankShells:
+    ammunition:
+      ammunitionType: 17
+      ammoCount: 0
+      usesClip: 0
+      roundsPerClip: 0
+      roundsInClip: 0
+    max: 0
+    ammunitionPrefab: {fileID: 0}
+  activeWeapon: {fileID: 0}
 --- !u!114 &11490746
 MonoBehaviour:
   m_ObjectHideFlags: 1

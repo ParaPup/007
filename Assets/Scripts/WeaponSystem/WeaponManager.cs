@@ -140,20 +140,21 @@ public class WeaponManager : MonoBehaviour
 	{
 		if (!PlayerHasWeapon(weapon))
 		{
-			weapon.OnPickup(weaponLocation.transform);
+			weapon.OnPickup(weaponLocation.transform, ammoInventory.GetByType(weapon.ammo.ammunitionType).ammunition);
 			weaponInventory.Add(weapon);
 			SetActiveWeapon(weapon);
 		}
 	}
 
-	public void PickUpAmmo(Ammunition ammo)
+	public void PickUpAmmo(AmmunitionComponent ammoComp)
 	{
 		// See if we can find the ammo AmmunitionType in the ammo inventory
-		var clone = ammoInventory.GetByType(ammo.ammunitionType);
+		var clone = ammoInventory.GetByType(ammoComp.ammunition.ammunitionType);
 		if (clone != null)
 		{
 			// We were able to find the ammo AmmunitionType in the ammo inventory
-			clone.AddRounds(ammo);
+			clone.AddRounds(ammoComp.ammunition);
+            ammoComp.OnPickup(gameObject.transform);
 		}
 	}
 

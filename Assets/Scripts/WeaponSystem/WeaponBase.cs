@@ -98,8 +98,10 @@ public abstract class WeaponBase : MonoBehaviour
 	}
 
 	// Caled when the weapon is possessed by an actor
-	public virtual void OnPickup(Transform actor)
+	public virtual void OnPickup(Transform actor, Ammunition ammo)
 	{
+        // Specify ammo ref
+        this.ammo = ammo;
 		// Disable Physics properties
 		physicsComp.isKinematic = true;
 		physicsComp.detectCollisions = false;
@@ -116,6 +118,8 @@ public abstract class WeaponBase : MonoBehaviour
 	// Called when the actor holding the weapon loses possession of the weapon
 	public virtual void OnDrop()
 	{
+        // Remove ammo ref
+        ammo = null;
 		// Re-enable Physics properties
 		physicsComp.isKinematic = false;
 		physicsComp.detectCollisions = true;
@@ -207,36 +211,31 @@ public abstract class WeaponBase : MonoBehaviour
         return string.Equals(weaponName, other.weaponName);
     }
 
-    /*TODO
-	public override int GetHashCode()
-	{
-		unchecked
-		{
-			int hashCode = base.GetHashCode();
-			hashCode = (hashCode * 397) ^ magCapacity;
-			hashCode = (hashCode * 397) ^ ammo.amount;
-			hashCode = (hashCode * 397) ^ ammoInMag;
-			hashCode = (hashCode * 397) ^ (weaponName != null ? weaponName.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ cooldownBetweenTrigger.GetHashCode();
-			hashCode = (hashCode * 397) ^ reloadTime.GetHashCode();
-			hashCode = (hashCode * 397) ^ (emptyClipSound != null ? emptyClipSound.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (reloadSound != null ? reloadSound.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (fireSound != null ? fireSound.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (int)ammunitionType;
-			hashCode = (hashCode * 397) ^ lastShotTime.GetHashCode();
-			hashCode = (hashCode * 397) ^ reloading.GetHashCode();
-			hashCode = (hashCode * 397) ^ reloadStartTime.GetHashCode();
-			hashCode = (hashCode * 397) ^ (audioEmitter != null ? audioEmitter.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (pickupCollisionComp != null ? pickupCollisionComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (physicsComp != null ? physicsComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (meshComp != null ? meshComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (meshRendComp != null ? meshRendComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (modelCollisionComp != null ? modelCollisionComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (materialComp != null ? materialComp.GetHashCode() : 0);
-			return hashCode;
-		}
-	}
-    */
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hashCode = base.GetHashCode();
+            hashCode = (hashCode * 397) ^ (weaponName != null ? weaponName.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ cooldownBetweenTrigger.GetHashCode();
+            hashCode = (hashCode * 397) ^ reloadTime.GetHashCode();
+            hashCode = (hashCode * 397) ^ (ammo != null ? ammo.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (emptyClipSound != null ? emptyClipSound.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (reloadSound != null ? reloadSound.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (fireSound != null ? fireSound.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ lastShotTime.GetHashCode();
+            hashCode = (hashCode * 397) ^ reloading.GetHashCode();
+            hashCode = (hashCode * 397) ^ reloadStartTime.GetHashCode();
+            hashCode = (hashCode * 397) ^ (audioEmitter != null ? audioEmitter.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (pickupCollisionComp != null ? pickupCollisionComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (physicsComp != null ? physicsComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (meshComp != null ? meshComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (meshRendComp != null ? meshRendComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (modelCollisionComp != null ? modelCollisionComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (materialComp != null ? materialComp.GetHashCode() : 0);
+            return hashCode;
+        }
+    }
 }
 
 public static class WeaponBaseListExtensions
