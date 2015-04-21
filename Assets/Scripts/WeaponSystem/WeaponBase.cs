@@ -1,22 +1,22 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
 {
-    public int ammoCapacity;                        // Maximum ammunition. TODO implement
-    public int magCapacity;                         // Magazine capacity.
-    public int ammoCount;                           // Total ammunition.
-    public int ammoInMag;                           // Ammo in the magazine.
     public string weaponName;                       // Name of weapon.
     public float cooldownBetweenTrigger;            // Cooldown time between shots from the trigger (in seconds).
     public float reloadTime;                        // Time to reload (in seconds).
-    
+
+    public Ammunition defaultAmmo = new Ammunition();
+    [ReadOnly]
+    public Ammunition ammo;
+
+    // TODO usesAmmo bool for unarmed/unlimitd weapons
+
     public AudioClip emptyClipSound;                // Empty Clip sound clip.
     public AudioClip reloadSound;                   // Reloading sound clip.
     public AudioClip fireSound;                     // Weapon fire sound clip.
-
-    public AmmunitionType weaponAmmunitionType;     // Ammunition type that
-                                                    // the weapon accepts as valid ammunition.
     
     protected float lastShotTime = 0;               // Time last shot was fired.
     private bool reloading = false;                 // Is the Actor currently reloading?
@@ -26,13 +26,14 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] [ReadOnly] protected AudioSource audioEmitter;
     [SerializeField] [ReadOnly] protected Collider pickupCollisionComp;
     [SerializeField] [ReadOnly] protected Rigidbody physicsComp;
-    [SerializeField] [ReadOnly] protected MeshFilter meshComp ;
+    [SerializeField] [ReadOnly] protected MeshFilter meshComp;
     [SerializeField] [ReadOnly] protected MeshRenderer meshRendComp;
     [SerializeField] [ReadOnly] protected Collider modelCollisionComp;
     [SerializeField] [ReadOnly] protected Material materialComp;
 
     public void Awake()
     {
+        ammo = defaultAmmo;
         physicsComp = GetComponent<Rigidbody>();
         pickupCollisionComp = GetComponent<Collider>();
         Transform model = transform.FindChild("Model");
@@ -47,12 +48,17 @@ public abstract class WeaponBase : MonoBehaviour
         ValidateImperatives();
     }
 
+	public void Start()
+	{
+	}
+
     public virtual void Reset()
     {
         // Sensible defaults
-        ammoCount = 10;
-        ammoInMag = 5;
-        magCapacity = 5;
+        ammo.ammoCount = 10;
+		ammo.usesClip = true;
+		ammo.RoundsPerClip = 5;
+	    ammo.RoundsInClip = 5;
         cooldownBetweenTrigger = 1.0f;
         reloadTime = 3.0f;
         weaponName = "";
@@ -97,8 +103,12 @@ public abstract class WeaponBase : MonoBehaviour
 	}
 
 	// Caled when the weapon is possessed by an actor
-	public virtual void OnPickup(Transform actor)
+	public virtual void OnPickup(Transform actor, AmmunitionInvItem ammo)
 	{
+        
+        // Specify ammo ref
+	    ammo.AddRounds(this.ammo);
+        this.ammo = ammo.ammunition;
 		// Disable Physics properties
 		physicsComp.isKinematic = true;
 		physicsComp.detectCollisions = false;
@@ -115,6 +125,8 @@ public abstract class WeaponBase : MonoBehaviour
 	// Called when the actor holding the weapon loses possession of the weapon
 	public virtual void OnDrop()
 	{
+        // Remove ammo ref
+        ammo = new Ammunition();
 		// Re-enable Physics properties
 		physicsComp.isKinematic = false;
 		physicsComp.detectCollisions = true;
@@ -170,23 +182,16 @@ public abstract class WeaponBase : MonoBehaviour
     // Attempt to reload the weapon
     public virtual void Reload()
     {
-        if (ammoCount > 0)
-        {
-            // We are not empty
-            if (ammoInMag != magCapacity)
-            {
-                // Reload the magazine
-                reloading = true;
-                reloadStartTime = Time.time;
-                // Audible feedback on reload
-                if (reloadSound != null)
-                {
-                    audioEmitter.PlayOneShot(reloadSound, 0.9f);
-                }
-                ammoInMag = ammoCount >= magCapacity ? magCapacity : ammoCount;
-            }
-        }
-        
+	    if (ammo.Reload())
+	    {
+		    reloading = true;
+		    reloadStartTime = Time.time;
+			// Audible feedback on reload
+			if (reloadSound != null)
+			{
+				audioEmitter.PlayOneShot(reloadSound, 0.9f);
+			}
+	    }
     }
 
     // Weapon specialisation specific member initialisation method.
@@ -213,33 +218,79 @@ public abstract class WeaponBase : MonoBehaviour
         return string.Equals(weaponName, other.weaponName);
     }
 
-	public override int GetHashCode()
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hashCode = base.GetHashCode();
+            hashCode = (hashCode * 397) ^ (weaponName != null ? weaponName.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ cooldownBetweenTrigger.GetHashCode();
+            hashCode = (hashCode * 397) ^ reloadTime.GetHashCode();
+            hashCode = (hashCode * 397) ^ (ammo != null ? ammo.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (emptyClipSound != null ? emptyClipSound.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (reloadSound != null ? reloadSound.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (fireSound != null ? fireSound.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ lastShotTime.GetHashCode();
+            hashCode = (hashCode * 397) ^ reloading.GetHashCode();
+            hashCode = (hashCode * 397) ^ reloadStartTime.GetHashCode();
+            hashCode = (hashCode * 397) ^ (audioEmitter != null ? audioEmitter.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (pickupCollisionComp != null ? pickupCollisionComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (physicsComp != null ? physicsComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (meshComp != null ? meshComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (meshRendComp != null ? meshRendComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (modelCollisionComp != null ? modelCollisionComp.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (materialComp != null ? materialComp.GetHashCode() : 0);
+            return hashCode;
+        }
+    }
+}
+
+public static class WeaponBaseListExtensions
+{
+	// Gets the next weapon after currentWeapon in the List.
+	// Returns null if currentWeapon is not present in the List.
+	public static WeaponBase WeaponAfter(this List<WeaponBase> weapons, WeaponBase currentWeapon)
 	{
-		unchecked
+		var weaponsSize = weapons.Count;
+		for (var i = 0; i < weaponsSize; i++)
 		{
-			int hashCode = base.GetHashCode();
-			hashCode = (hashCode * 397) ^ ammoCapacity;
-			hashCode = (hashCode * 397) ^ magCapacity;
-			hashCode = (hashCode * 397) ^ ammoCount;
-			hashCode = (hashCode * 397) ^ ammoInMag;
-			hashCode = (hashCode * 397) ^ (weaponName != null ? weaponName.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ cooldownBetweenTrigger.GetHashCode();
-			hashCode = (hashCode * 397) ^ reloadTime.GetHashCode();
-			hashCode = (hashCode * 397) ^ (emptyClipSound != null ? emptyClipSound.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (reloadSound != null ? reloadSound.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (fireSound != null ? fireSound.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (int)weaponAmmunitionType;
-			hashCode = (hashCode * 397) ^ lastShotTime.GetHashCode();
-			hashCode = (hashCode * 397) ^ reloading.GetHashCode();
-			hashCode = (hashCode * 397) ^ reloadStartTime.GetHashCode();
-			hashCode = (hashCode * 397) ^ (audioEmitter != null ? audioEmitter.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (pickupCollisionComp != null ? pickupCollisionComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (physicsComp != null ? physicsComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (meshComp != null ? meshComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (meshRendComp != null ? meshRendComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (modelCollisionComp != null ? modelCollisionComp.GetHashCode() : 0);
-			hashCode = (hashCode * 397) ^ (materialComp != null ? materialComp.GetHashCode() : 0);
-			return hashCode;
+			if (currentWeapon.Equals(weapons[i]))
+			{
+				return i + 1 < weaponsSize ? weapons[i + 1] : weapons[0];
+			}
 		}
+		// currentWeapon does not exist in the list
+		return null;
+	}
+
+	// Gets the weapon before currentWeapon in the List.
+	// Returns null if currentWeapon is not present in the List.
+	public static WeaponBase WeaponBefore(this List<WeaponBase> weapons, WeaponBase currentWeapon)
+	{
+		var weaponsSize = weapons.Count;
+		for (var i = 0; i < weaponsSize; i++)
+		{
+			if (currentWeapon.Equals(weapons[i]))
+			{
+				return i > 0 ? weapons[0] : weapons[weaponsSize - 1];
+			}
+		}
+		// currentWeapon does not exist in the list
+		return null;
+	}
+
+	// Gets the weapon object in the List of the same AmmunitionType as weaponToSearchFor.
+	// Returns null if weaponToSearchFor's AmmunitionType of weapon is not present in the list.
+	public static WeaponBase GetWeapon(this List<WeaponBase> weapons, WeaponBase weaponToSearchFor)
+	{
+		foreach (var weapon in weapons)
+		{
+			if (weapon.Equals(weaponToSearchFor))
+			{
+				return weapon;
+			}
+		}
+		// weaponToSearchFor's weapon AmmunitionType does not exist in the list
+		return null;
 	}
 }

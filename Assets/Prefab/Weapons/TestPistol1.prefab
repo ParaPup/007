@@ -200,17 +200,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c674a1b221e83f4caa64b348be19f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoCapacity: 0
-  magCapacity: 5
-  ammoCount: 10
-  ammoInMag: 5
   weaponName: Test Pistol 1
   cooldownBetweenTrigger: .5
   reloadTime: 3
+  defaultAmmo:
+    ammunitionType: 0
+    ammoCount: 20
+    usesClip: 0
+    roundsPerClip: 0
+    roundsInClip: 0
+  ammo:
+    ammunitionType: 0
+    ammoCount: 0
+    usesClip: 0
+    roundsPerClip: 0
+    roundsInClip: 0
   emptyClipSound: {fileID: 0}
   reloadSound: {fileID: 0}
   fireSound: {fileID: 0}
-  weaponAmmunitionType: 0
   audioEmitter: {fileID: 0}
   pickupCollisionComp: {fileID: 0}
   physicsComp: {fileID: 0}
