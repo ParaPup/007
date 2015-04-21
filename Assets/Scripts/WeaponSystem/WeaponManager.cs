@@ -4,7 +4,6 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
 	public GameObject defaultWeaponPrefab = null;	// Default weapon to equip the player with
-	public GameObject defaultAmmoPrefab = null;		// Default ammo prefab to spawn when the player dies
 	public Transform weaponLocation = null;			// Location to instantiate the weapons.
 													// NB: This should be a child object of the player camera.
 
