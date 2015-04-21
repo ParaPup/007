@@ -140,7 +140,7 @@ public class WeaponManager : MonoBehaviour
 	{
 		if (!PlayerHasWeapon(weapon))
 		{
-			weapon.OnPickup(weaponLocation.transform, ammoInventory.GetByType(weapon.ammo.ammunitionType).ammunition);
+			weapon.OnPickup(weaponLocation.transform, ammoInventory.GetByType(weapon.ammo.ammunitionType));
 			weaponInventory.Add(weapon);
 			SetActiveWeapon(weapon);
 		}
@@ -194,32 +194,6 @@ public class WeaponManager : MonoBehaviour
 		clone.gameObject.SetActive(true);
 		clone.OnDrop();
 		weaponInventory.Remove(clone);
-	}
-
-	// TODO move functionality to OnDropAmmo and call
-	public void DropAmmo(AmmunitionInvItem ammo)
-	{
-		var ammoObj = Instantiate(ammo.ammunitionPrefab, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
-		if (ammoObj != null)
-		{
-			var clone = ammoObj.AddComponent<AmmunitionComponent>();
-			clone.ammunition = new Ammunition(ammo.ammunition);
-			clone.OnDrop();
-		}
-		ammoInventory.Remove(ammo);
-	}
-
-	public void DropAmmo(Ammunition ammo)
-	{
-		DropAmmo(ammoInventory.GetByType(ammo.ammunitionType));
-	}
-
-	public void DropAllAmmo()
-	{
-		foreach (var ammo in ammoInventory)
-		{
-			DropAmmo(ammo);
-		}
 	}
 
 	// Equip the next weapon in the weapon inventory

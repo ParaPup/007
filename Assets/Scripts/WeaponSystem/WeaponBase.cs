@@ -7,9 +7,13 @@ public abstract class WeaponBase : MonoBehaviour
     public string weaponName;                       // Name of weapon.
     public float cooldownBetweenTrigger;            // Cooldown time between shots from the trigger (in seconds).
     public float reloadTime;                        // Time to reload (in seconds).
-    
-	public Ammunition ammo;
-    
+
+    public Ammunition defaultAmmo = new Ammunition();
+    [ReadOnly]
+    public Ammunition ammo;
+
+    // TODO usesAmmo bool for unarmed/unlimitd weapons
+
     public AudioClip emptyClipSound;                // Empty Clip sound clip.
     public AudioClip reloadSound;                   // Reloading sound clip.
     public AudioClip fireSound;                     // Weapon fire sound clip.
@@ -29,6 +33,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     public void Awake()
     {
+        ammo = defaultAmmo;
         physicsComp = GetComponent<Rigidbody>();
         pickupCollisionComp = GetComponent<Collider>();
         Transform model = transform.FindChild("Model");
@@ -98,10 +103,12 @@ public abstract class WeaponBase : MonoBehaviour
 	}
 
 	// Caled when the weapon is possessed by an actor
-	public virtual void OnPickup(Transform actor, Ammunition ammo)
+	public virtual void OnPickup(Transform actor, AmmunitionInvItem ammo)
 	{
+        
         // Specify ammo ref
-        this.ammo = ammo;
+	    ammo.AddRounds(this.ammo);
+        this.ammo = ammo.ammunition;
 		// Disable Physics properties
 		physicsComp.isKinematic = true;
 		physicsComp.detectCollisions = false;
@@ -119,7 +126,7 @@ public abstract class WeaponBase : MonoBehaviour
 	public virtual void OnDrop()
 	{
         // Remove ammo ref
-        ammo = null;
+        ammo = new Ammunition();
 		// Re-enable Physics properties
 		physicsComp.isKinematic = false;
 		physicsComp.detectCollisions = true;

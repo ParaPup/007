@@ -121,7 +121,7 @@ public class Ammunition
     {
         if (usesClip)
         {
-            if (ammoCount > 0 && RoundsInClip == 0)
+            if (ammoCount > 0 && RoundsInClip != RoundsPerClip)
             {
                 RoundsInClip = RoundsPerClip;
                 return true;
