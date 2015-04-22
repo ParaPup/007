@@ -7,6 +7,10 @@ public abstract class WeaponBase : MonoBehaviour
     public string weaponName;                       // Name of weapon.
     public float cooldownBetweenTrigger;            // Cooldown time between shots from the trigger (in seconds).
     public float reloadTime;                        // Time to reload (in seconds).
+    public float damagePerShot;
+
+    public bool usesParticleForShot = true;         // Does the weapon use a particle system to represent a bullet shot?
+
 
     public Ammunition defaultAmmo = new Ammunition();
     [ReadOnly]
@@ -30,12 +34,15 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] [ReadOnly] protected MeshRenderer meshRendComp;
     [SerializeField] [ReadOnly] protected Collider modelCollisionComp;
     [SerializeField] [ReadOnly] protected Material materialComp;
+    [SerializeField] [ReadOnly] protected GameObject shotParticle;
 
     public void Awake()
     {
         ammo = defaultAmmo;
         physicsComp = GetComponent<Rigidbody>();
         pickupCollisionComp = GetComponent<Collider>();
+        if (usesParticleForShot && GetComponent<ParticleSystem>() != null)
+            shotParticle = GetComponent<ParticleSystem>().gameObject;
         Transform model = transform.FindChild("Model");
         if (model != null)
         {
@@ -48,9 +55,10 @@ public abstract class WeaponBase : MonoBehaviour
         ValidateImperatives();
     }
 
-	public void Start()
-	{
-	}
+    public void Start()
+    {
+        ValidateImperatives();
+    }
 
     public virtual void Reset()
     {
@@ -59,6 +67,7 @@ public abstract class WeaponBase : MonoBehaviour
 		ammo.usesClip = true;
 		ammo.RoundsPerClip = 5;
 	    ammo.RoundsInClip = 5;
+        damagePerShot = 20.0f;
         cooldownBetweenTrigger = 1.0f;
         reloadTime = 3.0f;
         weaponName = "";
@@ -99,6 +108,10 @@ public abstract class WeaponBase : MonoBehaviour
         if (materialComp == null)
         {
             Debug.LogError(name + "'s Model does not contain a Material Component (Material)");
+        }
+        if (usesParticleForShot && (shotParticle == null || shotParticle.GetComponent<ParticleSystem>() == null))
+        {
+            Debug.LogError(name + "'s Weapon uses a particle system that is not defined");
         }
 	}
 
@@ -192,6 +205,46 @@ public abstract class WeaponBase : MonoBehaviour
 				audioEmitter.PlayOneShot(reloadSound, 0.9f);
 			}
 	    }
+    }
+
+    // Ray cast a single ray from the camera with direction
+    protected void FireSingleShotRay(Vector3 direction)
+    {
+        var camera = GameObject.FindGameObjectWithTag("MainCamera");
+        if (camera != null)
+        {
+            RaycastHit rayHit;
+            // Query raycast for hit
+            if (Physics.Raycast(camera.transform.position, direction, out rayHit, 1000))
+            {
+                if (rayHit.collider.gameObject.tag == "enemy")
+                {
+                    rayHit.collider.gameObject.SendMessage("hit", damagePerShot);
+                }
+            }
+            Debug.DrawRay(camera.transform.position, direction * 100, Color.yellow, 10.0f);
+            if (usesParticleForShot)
+            {
+                //shotParticle.transform.rotation = direction;
+                shotParticle.GetComponent<ParticleSystem>().Play();
+            }
+        }
+    }
+
+    // Ray cast multiple rays from the camera with direction.
+    protected void FireMultipleShotRays(Vector3 direction, int numShots, float directionDelta)
+    {
+        Vector3 shotDir, crossDir;
+        for (int i = 0; i < numShots; i++)
+        {
+            shotDir = direction;
+            crossDir = Vector3.Cross(shotDir, Vector3.up);
+            crossDir = Quaternion.AngleAxis(Random.Range(0.0f, 360.0f), shotDir) * crossDir;
+            crossDir = Random.Range(0.0f, directionDelta) * crossDir;
+            shotDir += crossDir;
+
+            FireSingleShotRay(shotDir);
+        }
     }
 
     // Weapon specialisation specific member initialisation method.

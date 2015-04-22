@@ -6,6 +6,7 @@ public class WeaponSemiAuto : WeaponBase
     {
         weaponName = "Semi-Auto Firearm";
         cooldownBetweenTrigger = 0.5f;
+        damagePerShot = 15.0f;
     }
 
     public override void StartFire()
@@ -18,16 +19,14 @@ public class WeaponSemiAuto : WeaponBase
 				{
 					if (fireSound != null)
 						audioEmitter.PlayOneShot(fireSound, 0.9f);
-					Debug.Log("Pistol: BANG");
+				    FireSingleShotRay(transform.TransformDirection(Vector3.forward));
 				}
-				else
-					Reload();
+				else Reload();
 	        }
 	        else
 	        {
 				if (emptyClipSound != null)
 					audioEmitter.PlayOneShot(emptyClipSound, 0.9f);
-				Debug.Log("Pistol: CLICK");
 	        }
         }
     }
