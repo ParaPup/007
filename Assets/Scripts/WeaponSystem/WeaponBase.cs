@@ -251,11 +251,38 @@ public abstract class WeaponBase : MonoBehaviour
     // weaponName MUST be specified here
     protected abstract void Init();
 
+    // Weapon specialisation specific fire method
+    protected abstract void OnFire();
+
+    // Weapon specialisation specific end fire method
+    protected abstract void OnEndFire();
+
     // Called when the player begins the fire sequence (Fire key is pressed down)
-    public abstract void StartFire();
+    public virtual void StartFire()
+    {
+        if (CanFire())
+        {
+            if (ammo.ammoCount > 0)
+            {
+                if (ammo.DispenseRound())
+                {
+                    OnFire();
+                }
+                else Reload();
+            }
+            else
+            {
+                if (emptyClipSound != null)
+                    audioEmitter.PlayOneShot(emptyClipSound, 0.9f);
+            }
+        }
+    }
 
     // Called when the player ends the fire sequence (Fire key is released)
-    public abstract void EndFire();
+    public virtual void EndFire()
+    {
+        OnEndFire();
+    }
 
     // System.Object.Equals override. Checks the weaponName's of the compared WeaponBase objects for equality.
     public override bool Equals(object o)
