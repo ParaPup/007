@@ -77,25 +77,37 @@ public class EnemyManager : MonoBehaviour {
 		nav.SetDestination(path.corners[1]);
 	}
 
+	public bool isPlayer(){
+		if(Physics.Raycast(transform.position, (player.transform.position - transform.position), out rhit, maxRange))
+		{
+			if(rhit.collider.gameObject.tag == "Player")
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+
 	float maxRange = 50;
 	RaycastHit rhit;
 	//Shooting the player
 	void shoot(){
 		if(bAlert==true && canShoot){
 			Debug.DrawRay(transform.position, (player.transform.position - transform.position), Color.green);
-			if(Vector3.Distance(transform.position, player.transform.position) < maxRange )
+			if(Vector3.Distance(transform.position, player.transform.position) < maxRange)
 			{
-				if(Physics.Raycast(transform.position, (player.transform.position - transform.position), out rhit, maxRange))
-				{
-					if(rhit.collider.gameObject.tag == "Player")
-					{
+				if(isPlayer()){
 						StartCoroutine(NextShot());
 						canShoot = false;
-						rhit.collider.gameObject.SendMessage("hit",10F);
+						rhit.collider.gameObject.SendMessage("hit",5F);
 					}
-					else{
-						sight(player.transform.position);
-					}
+				else{
+					sight(player.transform.position);
 				}
 			}
 		}

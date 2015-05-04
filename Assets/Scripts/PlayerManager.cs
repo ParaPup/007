@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour {
 	public float health;
 	public AudioClip pain;
 	public UnityEngine.UI.Slider healthBar;
+	public bool crouching;
 
 	void Update() {
 		intract();
@@ -21,10 +22,28 @@ public class PlayerManager : MonoBehaviour {
 			moveDirection *= speed;
 			if (Input.GetButton("Jump"))
 				moveDirection.y = jumpSpeed;
-			
 		}
 		moveDirection.y -= gravity * Time.deltaTime;
 		controller.Move(moveDirection * Time.deltaTime);
+		crouch();
+	}
+
+	void crouch(){
+		if(Input.GetButtonDown("Crouch")){
+			Debug.Log("crouch");
+			if(crouching){
+				crouching = false;
+				Debug.Log("crouching");
+				gameObject.GetComponent<Transform>().transform.localScale = new Vector3(1F, 1F, 1F);
+				speed = 6F;
+			}
+			else if(!crouching){
+				crouching = true;
+				speed = 3F;
+				Debug.Log("!crouching");
+				gameObject.GetComponent<Transform>().transform.localScale = new Vector3(1F, 0.5F, 1F);
+			}
+		}
 	}
 
 	RaycastHit rhit;
