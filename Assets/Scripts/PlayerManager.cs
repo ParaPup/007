@@ -14,7 +14,8 @@ public class PlayerManager : MonoBehaviour {
 
 	void Update() {
 		intract();
-		healthBar.value = health;
+		//healthBar.value = health;
+
 		CharacterController controller = GetComponent<CharacterController>();
 		if (controller.isGrounded) {
 			moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));

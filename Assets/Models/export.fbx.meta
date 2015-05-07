@@ -1,132 +1,42 @@
 fileFormatVersion: 2
-guid: 072f8c933037ede499a2e2492a30d95b
-timeCreated: 1430706353
+guid: 1537cc5fd2e467645b78a5a48bd349cc
+timeCreated: 1430799868
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
     100002: pCube1
-    100004: pCube10
-    100006: pCube11
-    100008: pCube12
-    100010: pCube13
-    100012: pCube14
-    100014: pCube15
-    100016: pCube16
-    100018: pCube17
-    100020: pCube18
-    100022: pCube23
-    100024: pCube24
-    100026: pCube25
-    100028: pCube3
-    100030: pCube4
-    100032: pCube5
-    100034: pCube6
-    100036: pCube7
-    100038: pCube8
-    100040: pCube9
+    100004: pCube23
+    100006: pCube24
+    100008: pCube3
+    100010: pCube7
     400000: //RootNode
     400002: pCube1
-    400004: pCube10
-    400006: pCube11
-    400008: pCube12
-    400010: pCube13
-    400012: pCube14
-    400014: pCube15
-    400016: pCube16
-    400018: pCube17
-    400020: pCube18
-    400022: pCube23
-    400024: pCube24
-    400026: pCube25
-    400028: pCube3
-    400030: pCube4
-    400032: pCube5
-    400034: pCube6
-    400036: pCube7
-    400038: pCube8
-    400040: pCube9
+    400004: pCube23
+    400006: pCube24
+    400008: pCube3
+    400010: pCube7
     2300000: pCube1
-    2300002: pCube10
-    2300004: pCube11
-    2300006: pCube12
-    2300008: pCube13
-    2300010: pCube14
-    2300012: pCube15
-    2300014: pCube16
-    2300016: pCube17
-    2300018: pCube18
-    2300020: pCube23
-    2300022: pCube24
-    2300024: pCube25
-    2300026: pCube3
-    2300028: pCube4
-    2300030: pCube5
-    2300032: pCube6
-    2300034: pCube7
-    2300036: pCube8
-    2300038: pCube9
+    2300002: pCube23
+    2300004: pCube24
+    2300006: pCube3
+    2300008: pCube7
     3300000: pCube1
-    3300002: pCube10
-    3300004: pCube11
-    3300006: pCube12
-    3300008: pCube13
-    3300010: pCube14
-    3300012: pCube15
-    3300014: pCube16
-    3300016: pCube17
-    3300018: pCube18
-    3300020: pCube23
-    3300022: pCube24
-    3300024: pCube25
-    3300026: pCube3
-    3300028: pCube4
-    3300030: pCube5
-    3300032: pCube6
-    3300034: pCube7
-    3300036: pCube8
-    3300038: pCube9
+    3300002: pCube23
+    3300004: pCube24
+    3300006: pCube3
+    3300008: pCube7
     4300000: pCube1
     4300002: pCube3
-    4300004: pCube4
-    4300006: pCube5
-    4300008: pCube6
-    4300010: pCube7
-    4300012: pCube8
-    4300014: pCube9
-    4300016: pCube10
-    4300018: pCube11
-    4300020: pCube12
-    4300022: pCube13
-    4300024: pCube14
-    4300026: pCube15
-    4300028: pCube16
-    4300030: pCube17
-    4300032: pCube18
-    4300034: pCube23
-    4300036: pCube24
-    4300038: pCube25
+    4300004: pCube7
+    4300006: pCube23
+    4300008: pCube24
     6400000: pCube1
-    6400002: pCube10
-    6400004: pCube11
-    6400006: pCube12
-    6400008: pCube13
-    6400010: pCube14
-    6400012: pCube15
-    6400014: pCube16
-    6400016: pCube17
-    6400018: pCube18
-    6400020: pCube23
-    6400022: pCube24
-    6400024: pCube25
-    6400026: pCube3
-    6400028: pCube4
-    6400030: pCube5
-    6400032: pCube6
-    6400034: pCube7
-    6400036: pCube8
-    6400038: pCube9
+    6400002: pCube23
+    6400004: pCube24
+    6400006: pCube3
+    6400008: pCube7
   materials:
     importMaterials: 1
     materialName: 0
