@@ -24,6 +24,5 @@ public class WeaponSemiAuto : WeaponBase
 
     protected override void OnEndFire()
     {
-        throw new System.NotImplementedException();
     }
 }
